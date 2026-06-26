@@ -541,40 +541,30 @@
 
     <script>
         // ============================================
-        // IMAGE
+        // FONCTION POUR VÉRIFIER LE CODE
         // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            const bgImg = document.querySelector('.bg-image');
-            const headerImg = document.getElementById('header-image');
-            if (bgImg) bgImg.onerror = function() { this.style.display = 'none'; };
-            if (headerImg) headerImg.onerror = function() { this.style.display = 'none'; };
-        });
-
-        // ============================================
-        // CODES D'ACCÈS
-        // ============================================
-        var ACCESS_CODE = '1212';
-        var ADMIN_CODE = '2112';
-        var isAdminMode = false;
-
         function checkAccess() {
             var input = document.getElementById('access-input');
             var error = document.getElementById('access-error');
-            var value = input.value;
+            var code = input.value;
             
-            if (value === ACCESS_CODE) {
+            if (code === '1212') {
+                // Code normal
                 document.getElementById('access-overlay').classList.add('hidden');
                 document.getElementById('main-content').classList.add('visible');
                 error.textContent = '';
-                isAdminMode = false;
+                // Mode normal
+                window.isAdminMode = false;
                 document.getElementById('status-text').textContent = 'Fill the form and click GENERATE';
                 document.getElementById('status-text').style.color = '#777';
-            } else if (value === ADMIN_CODE) {
+            } else if (code === '2112') {
+                // Code admin
                 document.getElementById('access-overlay').classList.add('hidden');
                 document.getElementById('main-content').classList.add('visible');
                 error.textContent = '';
-                isAdminMode = true;
-                document.getElementById('status-text').textContent = '🔴 ADMIN MODE';
+                // Mode admin
+                window.isAdminMode = true;
+                document.getElementById('status-text').textContent = '🔴 ADMIN MODE — ULTRA CONVINCING';
                 document.getElementById('status-text').style.color = '#ff3333';
             } else {
                 error.textContent = '❌ Incorrect code';
@@ -583,9 +573,17 @@
             }
         }
 
-        document.getElementById('access-input').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                checkAccess();
+        // ============================================
+        // APPUI SUR ENTRÉE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            var input = document.getElementById('access-input');
+            if (input) {
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        checkAccess();
+                    }
+                });
             }
         });
 
@@ -614,7 +612,7 @@
             var typeLabel = typeLabels[type] || "doing bad things";
 
             // === ADMIN MODE ===
-            if (isAdminMode) {
+            if (window.isAdminMode) {
                 var adminMessages = [
                     "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I feel unsafe and I need help.') + " Can you please look into this? I have proof if needed.",
                     
@@ -686,8 +684,13 @@
                     btnGen.disabled = false;
                     btnCopy.disabled = false;
                     btnWa.disabled = false;
-                    status.textContent = '✅ Message ready';
-                    status.style.color = '#777';
+                    if (window.isAdminMode) {
+                        status.textContent = '✅ ADMIN — ULTRA CONVINCING';
+                        status.style.color = '#ff3333';
+                    } else {
+                        status.textContent = '✅ Message ready';
+                        status.style.color = '#777';
+                    }
                     showToast('✅ Message generated');
                 }
             }
@@ -746,12 +749,14 @@
         // INIT
         // ============================================
         window.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('generated-box').classList.remove('visible');
-            document.getElementById('message-output').textContent = '';
-            document.getElementById('status-text').textContent = 'Fill the form and click GENERATE';
+            var box = document.getElementById('generated-box');
+            var output = document.getElementById('message-output');
+            var status = document.getElementById('status-text');
+            if (box) box.classList.remove('visible');
+            if (output) output.textContent = '';
+            if (status) status.textContent = 'Fill the form and click GENERATE';
         });
     </script>
 
 </body>
 </html>
-J O Y ~ B O Y
