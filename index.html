@@ -111,20 +111,47 @@
         .line-v:nth-child(14) { left: 75%; animation-duration: 2.6s; animation-delay: 0.2s; }
         .line-v:nth-child(15) { left: 90%; animation-duration: 3.6s; animation-delay: 0.7s; }
 
-        /* === CHAÎNE WHATSAPP EN HAUT === */
+        /* === CHAÎNE WHATSAPP EN HAUT AVEC LOGO ANIMÉ === */
         .channel-link {
             text-align: center;
             margin-bottom: 18px;
-            padding: 12px;
-            background: rgba(37, 211, 102, 0.08);
-            border-radius: 16px;
-            border: 1px solid rgba(37, 211, 102, 0.15);
-            transition: 0.3s;
+            padding: 14px 20px;
+            background: rgba(37, 211, 102, 0.06);
+            border-radius: 20px;
+            border: 1px solid rgba(37, 211, 102, 0.1);
+            transition: 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
+        .channel-link::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 20px;
+            padding: 2px;
+            background: conic-gradient(from 0deg, #25D366, #1da851, #25D366, #1da851, #25D366);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: spinBorder 4s linear infinite;
+            opacity: 0.6;
+        }
+        .channel-link:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes spinBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .channel-link:hover {
-            background: rgba(37, 211, 102, 0.15);
-            border-color: #25D366;
+            background: rgba(37, 211, 102, 0.12);
+            border-color: rgba(37, 211, 102, 0.3);
+            transform: scale(1.01);
+            box-shadow: 0 0 40px rgba(37, 211, 102, 0.1);
         }
+
         .channel-link a {
             color: #25D366;
             text-decoration: none;
@@ -133,15 +160,69 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 14px;
             font-family: 'Segoe UI', sans-serif;
+            position: relative;
+            z-index: 2;
         }
-        .channel-link a svg {
-            width: 28px;
-            height: 28px;
-            fill: #25D366;
+
+        /* === LOGO WHATSAPP AVEC EFFET === */
+        .wa-logo-wrapper {
+            position: relative;
+            width: 44px;
+            height: 44px;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .wa-logo-wrapper svg {
+            width: 38px;
+            height: 38px;
+            fill: #25D366;
+            z-index: 2;
+            position: relative;
+            filter: drop-shadow(0 0 8px rgba(37, 211, 102, 0.3));
+            animation: logoPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(37, 211, 102, 0.3)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(37, 211, 102, 0.6)); }
+        }
+
+        /* Anneaux autour du logo */
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(37, 211, 102, 0.3);
+            animation: ringExpand 3s ease-out infinite;
+            pointer-events: none;
+        }
+        .ring:nth-child(1) {
+            width: 44px;
+            height: 44px;
+            animation-delay: 0s;
+        }
+        .ring:nth-child(2) {
+            width: 54px;
+            height: 54px;
+            animation-delay: 0.8s;
+            border-color: rgba(37, 211, 102, 0.15);
+        }
+        .ring:nth-child(3) {
+            width: 64px;
+            height: 64px;
+            animation-delay: 1.6s;
+            border-color: rgba(37, 211, 102, 0.08);
+        }
+
+        @keyframes ringExpand {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
         .channel-link a span {
             font-size: 13px;
             opacity: 0.7;
@@ -399,6 +480,11 @@
             .main-logo { font-size: 30px; letter-spacing: 8px; }
             .header-image { max-height: 180px; }
             .channel-link a { font-size: 14px; flex-wrap: wrap; }
+            .wa-logo-wrapper { width: 36px; height: 36px; }
+            .wa-logo-wrapper svg { width: 30px; height: 30px; }
+            .ring:nth-child(1) { width: 36px; height: 36px; }
+            .ring:nth-child(2) { width: 44px; height: 44px; }
+            .ring:nth-child(3) { width: 52px; height: 52px; }
         }
     </style>
 </head>
@@ -424,12 +510,19 @@
     <div class="line-v"></div>
 
     <div id="main-content">
-        <!-- === LIEN CHAÎNE WHATSAPP EN HAUT === -->
+        <!-- === CHAÎNE WHATSAPP AVEC LOGO ANIMÉ === -->
         <div class="channel-link">
             <a href="https://whatsapp.com/channel/0029VbBGPvF8aKvKN8YQft2d" target="_blank">
-                <svg viewBox="0 0 24 24" width="28" height="28">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
+                <div class="wa-logo-wrapper">
+                    <!-- Anneaux autour du logo -->
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <!-- Logo WhatsApp -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                </div>
                 <span>≪ •❈• ≫ 𝐉𝐎𝐘 🌟〆 ÉDIT✦PURGEURS 〆⛩️</span>
             </a>
         </div>
