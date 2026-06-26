@@ -541,31 +541,29 @@
 
     <script>
         // ============================================
-        // FONCTION POUR VÉRIFIER LE CODE
+        // FONCTION SIMPLE POUR LE CODE
         // ============================================
         function checkAccess() {
             var input = document.getElementById('access-input');
             var error = document.getElementById('access-error');
             var code = input.value;
             
-            if (code === '1212') {
-                // Code normal
-                document.getElementById('access-overlay').classList.add('hidden');
-                document.getElementById('main-content').classList.add('visible');
+            if (code === '1212' || code === '2112') {
+                // Cacher l'overlay
+                document.getElementById('access-overlay').style.display = 'none';
+                // Afficher le contenu
+                document.getElementById('main-content').style.display = 'block';
                 error.textContent = '';
-                // Mode normal
-                window.isAdminMode = false;
-                document.getElementById('status-text').textContent = 'Fill the form and click GENERATE';
-                document.getElementById('status-text').style.color = '#777';
-            } else if (code === '2112') {
-                // Code admin
-                document.getElementById('access-overlay').classList.add('hidden');
-                document.getElementById('main-content').classList.add('visible');
-                error.textContent = '';
-                // Mode admin
-                window.isAdminMode = true;
-                document.getElementById('status-text').textContent = '🔴 ADMIN MODE — ULTRA CONVINCING';
-                document.getElementById('status-text').style.color = '#ff3333';
+                
+                if (code === '2112') {
+                    window.isAdminMode = true;
+                    document.getElementById('status-text').textContent = '🔴 ADMIN MODE';
+                    document.getElementById('status-text').style.color = '#ff3333';
+                } else {
+                    window.isAdminMode = false;
+                    document.getElementById('status-text').textContent = 'Fill the form and click GENERATE';
+                    document.getElementById('status-text').style.color = '#777';
+                }
             } else {
                 error.textContent = '❌ Incorrect code';
                 input.value = '';
@@ -576,16 +574,11 @@
         // ============================================
         // APPUI SUR ENTRÉE
         // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            var input = document.getElementById('access-input');
-            if (input) {
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter') {
-                        checkAccess();
-                    }
-                });
+        document.getElementById('access-input').onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                checkAccess();
             }
-        });
+        };
 
         // ============================================
         // MESSAGES
@@ -611,13 +604,10 @@
 
             var typeLabel = typeLabels[type] || "doing bad things";
 
-            // === ADMIN MODE ===
             if (window.isAdminMode) {
                 var adminMessages = [
                     "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I feel unsafe and I need help.') + " Can you please look into this? I have proof if needed.",
-                    
                     "I'm reaching out because " + (nom || 'a user') + (numero ? ' (' + numero + ') ' : '') + "has been " + typeLabel + ". " + (details || 'This has been going on for too long.') + " Please help me with this.",
-                    
                     "Hello, I need assistance. " + (nom || 'Someone') + (numero ? ' from ' + numero + ' ' : '') + "is " + typeLabel + ". " + (details || 'I'm scared and I don't know what to do.') + " Can someone help me please?"
                 ];
                 var msg = adminMessages[messageIndex % adminMessages.length];
@@ -625,17 +615,12 @@
                 return msg;
             }
 
-            // === NORMAL MODE ===
             var messages = [
-                "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I've been dealing with this for a while and I'm really stressed.') + " Can you please check this out? I can send proof if needed. Thank you.",
-                
-                "Hello, I'm having a problem with " + (nom || 'a user') + (numero ? ' (' + numero + ') ' : '') + "who is " + typeLabel + ". " + (details || 'I don't feel safe using WhatsApp anymore.') + " Could you please help me resolve this? I appreciate your help.",
-                
+                "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I\'ve been dealing with this for a while and I\'m really stressed.') + " Can you please check this out? I can send proof if needed. Thank you.",
+                "Hello, I'm having a problem with " + (nom || 'a user') + (numero ? ' (' + numero + ') ' : '') + "who is " + typeLabel + ". " + (details || 'I don\'t feel safe using WhatsApp anymore.') + " Could you please help me resolve this? I appreciate your help.",
                 "I need your help with " + (nom || 'someone') + (numero ? ' from ' + numero + ' ' : '') + "who has been " + typeLabel + ". " + (details || 'This is really affecting me and I need it to stop.') + " Please assist me with this. Thank you.",
-                
-                "Hi there, " + (nom || 'a person') + (numero ? ' with number ' + numero + ' ' : '') + "has been " + typeLabel + ". " + (details || 'I've tried everything and nothing works.') + " Can you please look into this for me? I'd really appreciate it.",
-                
-                "Hello, I'm reaching out because " + (nom || 'someone') + (numero ? ' (' + numero + ') ' : '') + "is " + typeLabel + ". " + (details || 'I'm worried and need this to stop.') + " Please help me with this situation. Thank you."
+                "Hi there, " + (nom || 'a person') + (numero ? ' with number ' + numero + ' ' : '') + "has been " + typeLabel + ". " + (details || 'I\'ve tried everything and nothing works.') + " Can you please look into this for me? I'd really appreciate it.",
+                "Hello, I'm reaching out because " + (nom || 'someone') + (numero ? ' (' + numero + ') ' : '') + "is " + typeLabel + ". " + (details || 'I\'m worried and need this to stop.') + " Please help me with this situation. Thank you."
             ];
             
             var msg = messages[messageIndex % messages.length];
@@ -665,7 +650,7 @@
             btnWa.disabled = true;
             status.textContent = '⏳ Generating...';
             output.textContent = '';
-            box.classList.add('visible');
+            box.style.display = 'block';
 
             var fullMessage = generateFullMessage();
             var chars = fullMessage.split('');
@@ -744,18 +729,6 @@
                 t.classList.remove('show');
             }, 2500);
         }
-
-        // ============================================
-        // INIT
-        // ============================================
-        window.addEventListener('DOMContentLoaded', function() {
-            var box = document.getElementById('generated-box');
-            var output = document.getElementById('message-output');
-            var status = document.getElementById('status-text');
-            if (box) box.classList.remove('visible');
-            if (output) output.textContent = '';
-            if (status) status.textContent = 'Fill the form and click GENERATE';
-        });
     </script>
 
 </body>
