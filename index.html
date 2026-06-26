@@ -114,8 +114,8 @@
         #access-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.94);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -540,29 +540,36 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // ============================================
+        // IMAGE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
             const bgImg = document.querySelector('.bg-image');
             const headerImg = document.getElementById('header-image');
-            bgImg.onerror = function() { this.style.display = 'none'; };
-            headerImg.onerror = function() { this.style.display = 'none'; };
+            if (bgImg) bgImg.onerror = function() { this.style.display = 'none'; };
+            if (headerImg) headerImg.onerror = function() { this.style.display = 'none'; };
         });
 
-        const ACCESS_CODE = '1212';
-        const ADMIN_CODE = '2112';
-        let isAdminMode = false;
+        // ============================================
+        // CODES D'ACCÈS
+        // ============================================
+        var ACCESS_CODE = '1212';
+        var ADMIN_CODE = '2112';
+        var isAdminMode = false;
 
         function checkAccess() {
-            const input = document.getElementById('access-input');
-            const error = document.getElementById('access-error');
+            var input = document.getElementById('access-input');
+            var error = document.getElementById('access-error');
+            var value = input.value;
             
-            if (input.value === ACCESS_CODE) {
+            if (value === ACCESS_CODE) {
                 document.getElementById('access-overlay').classList.add('hidden');
                 document.getElementById('main-content').classList.add('visible');
                 error.textContent = '';
                 isAdminMode = false;
                 document.getElementById('status-text').textContent = 'Fill the form and click GENERATE';
                 document.getElementById('status-text').style.color = '#777';
-            } else if (input.value === ADMIN_CODE) {
+            } else if (value === ADMIN_CODE) {
                 document.getElementById('access-overlay').classList.add('hidden');
                 document.getElementById('main-content').classList.add('visible');
                 error.textContent = '';
@@ -577,21 +584,23 @@
         }
 
         document.getElementById('access-input').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') checkAccess();
+            if (e.key === 'Enter') {
+                checkAccess();
+            }
         });
 
         // ============================================
-        // MESSAGES COURTS (POUR ÉVITER LE SPAM)
+        // MESSAGES
         // ============================================
-        let messageIndex = 0;
+        var messageIndex = 0;
 
         function generateFullMessage() {
-            const nom = document.getElementById('nom').value.trim();
-            const numero = document.getElementById('numero').value.trim();
-            const details = document.getElementById('details').value.trim();
+            var nom = document.getElementById('nom').value.trim();
+            var numero = document.getElementById('numero').value.trim();
+            var details = document.getElementById('details').value.trim();
+            var type = document.getElementById('type').value;
 
-            const type = document.getElementById('type').value;
-            const typeLabels = {
+            var typeLabels = {
                 harassment: "harassing me",
                 scam: "trying to scam me",
                 identity: "pretending to be me",
@@ -602,44 +611,36 @@
                 other: "doing really bad things"
             };
 
-            const typeLabel = typeLabels[type] || "doing bad things";
+            var typeLabel = typeLabels[type] || "doing bad things";
 
             // === ADMIN MODE ===
             if (isAdminMode) {
-                const msgs = [
-                    `Hi, I need to report ${nom || 'someone'} ${numero ? 'with this number ' + numero + ' ' : ''}who keeps ${typeLabel}. ${details || 'I feel unsafe and I need help.'} Can you please look into this? I have proof if needed.`,
+                var adminMessages = [
+                    "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I feel unsafe and I need help.') + " Can you please look into this? I have proof if needed.",
                     
-                    `I'm reaching out because ${nom || 'a user'} ${numero ? '(' + numero + ') ' : ''}has been ${typeLabel}. ${details || 'This has been going on for too long.'} Please help me with this.`,
+                    "I'm reaching out because " + (nom || 'a user') + (numero ? ' (' + numero + ') ' : '') + "has been " + typeLabel + ". " + (details || 'This has been going on for too long.') + " Please help me with this.",
                     
-                    `Hello, I need assistance. ${nom || 'Someone'} ${numero ? 'from ' + numero + ' ' : ''}is ${typeLabel}. ${details || 'I'm scared and I don't know what to do.'} Can someone help me please?`
+                    "Hello, I need assistance. " + (nom || 'Someone') + (numero ? ' from ' + numero + ' ' : '') + "is " + typeLabel + ". " + (details || 'I'm scared and I don't know what to do.') + " Can someone help me please?"
                 ];
-                const msg = msgs[messageIndex % msgs.length];
+                var msg = adminMessages[messageIndex % adminMessages.length];
                 messageIndex++;
                 return msg;
             }
 
-            // === NORMAL MODE (5 styles courts) ===
-            let msg = '';
-            const style = messageIndex % 5;
-
-            switch(style) {
-                case 0:
-                    msg = `Hi, I need to report ${nom || 'someone'} ${numero ? 'with this number ' + numero + ' ' : ''}who keeps ${typeLabel}. ${details || 'I've been dealing with this for a while and I'm really stressed.'} Can you please check this out? I can send proof if needed. Thank you.`;
-                    break;
-                case 1:
-                    msg = `Hello, I'm having a problem with ${nom || 'a user'} ${numero ? '(' + numero + ') ' : ''}who is ${typeLabel}. ${details || 'I don't feel safe using WhatsApp anymore.'} Could you please help me resolve this? I appreciate your help.`;
-                    break;
-                case 2:
-                    msg = `I need your help with ${nom || 'someone'} ${numero ? 'from ' + numero + ' ' : ''}who has been ${typeLabel}. ${details || 'This is really affecting me and I need it to stop.'} Please assist me with this. Thank you.`;
-                    break;
-                case 3:
-                    msg = `Hi there, ${nom || 'a person'} ${numero ? 'with number ' + numero + ' ' : ''}has been ${typeLabel}. ${details || 'I've tried everything and nothing works.'} Can you please look into this for me? I'd really appreciate it.`;
-                    break;
-                case 4:
-                    msg = `Hello, I'm reaching out because ${nom || 'someone'} ${numero ? '(' + numero + ') ' : ''}is ${typeLabel}. ${details || 'I'm worried and need this to stop.'} Please help me with this situation. Thank you.`;
-                    break;
-            }
-
+            // === NORMAL MODE ===
+            var messages = [
+                "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I've been dealing with this for a while and I'm really stressed.') + " Can you please check this out? I can send proof if needed. Thank you.",
+                
+                "Hello, I'm having a problem with " + (nom || 'a user') + (numero ? ' (' + numero + ') ' : '') + "who is " + typeLabel + ". " + (details || 'I don't feel safe using WhatsApp anymore.') + " Could you please help me resolve this? I appreciate your help.",
+                
+                "I need your help with " + (nom || 'someone') + (numero ? ' from ' + numero + ' ' : '') + "who has been " + typeLabel + ". " + (details || 'This is really affecting me and I need it to stop.') + " Please assist me with this. Thank you.",
+                
+                "Hi there, " + (nom || 'a person') + (numero ? ' with number ' + numero + ' ' : '') + "has been " + typeLabel + ". " + (details || 'I've tried everything and nothing works.') + " Can you please look into this for me? I'd really appreciate it.",
+                
+                "Hello, I'm reaching out because " + (nom || 'someone') + (numero ? ' (' + numero + ') ' : '') + "is " + typeLabel + ". " + (details || 'I'm worried and need this to stop.') + " Please help me with this situation. Thank you."
+            ];
+            
+            var msg = messages[messageIndex % messages.length];
             messageIndex++;
             return msg;
         }
@@ -647,18 +648,18 @@
         // ============================================
         // GÉNÉRATION
         // ============================================
-        let isGenerating = false;
-        let displayText = '';
+        var isGenerating = false;
+        var displayText = '';
 
         function startGeneration() {
             if (isGenerating) return;
 
-            const output = document.getElementById('message-output');
-            const box = document.getElementById('generated-box');
-            const btnGen = document.getElementById('btn-generate');
-            const btnCopy = document.getElementById('btn-copy');
-            const btnWa = document.getElementById('btn-wa');
-            const status = document.getElementById('status-text');
+            var output = document.getElementById('message-output');
+            var box = document.getElementById('generated-box');
+            var btnGen = document.getElementById('btn-generate');
+            var btnCopy = document.getElementById('btn-copy');
+            var btnWa = document.getElementById('btn-wa');
+            var status = document.getElementById('status-text');
 
             isGenerating = true;
             btnGen.disabled = true;
@@ -668,9 +669,9 @@
             output.textContent = '';
             box.classList.add('visible');
 
-            const fullMessage = generateFullMessage();
-            const chars = fullMessage.split('');
-            let index = 0;
+            var fullMessage = generateFullMessage();
+            var chars = fullMessage.split('');
+            var index = 0;
             displayText = '';
 
             function typeNextChar() {
@@ -678,7 +679,7 @@
                     displayText += chars[index];
                     output.textContent = displayText;
                     index++;
-                    const delay = 15 + Math.random() * 25;
+                    var delay = 15 + Math.random() * 25;
                     setTimeout(typeNextChar, delay);
                 } else {
                     isGenerating = false;
@@ -695,12 +696,12 @@
         }
 
         function copyMessage() {
-            const text = document.getElementById('message-output').textContent;
+            var text = document.getElementById('message-output').textContent;
             if (!text) return showToast('❌ Generate a message first');
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(text).then(function() {
                 showToast('📋 Copied');
-            }).catch(() => {
-                const area = document.createElement('textarea');
+            }).catch(function() {
+                var area = document.createElement('textarea');
                 area.value = text;
                 document.body.appendChild(area);
                 area.select();
@@ -711,13 +712,13 @@
         }
 
         function sendWhatsApp() {
-            const text = document.getElementById('message-output').textContent;
+            var text = document.getElementById('message-output').textContent;
             if (!text) return showToast('❌ Generate a message first');
 
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(text).then(function() {
                 showToast('📋 Copied! Opening WhatsApp...');
-            }).catch(() => {
-                const area = document.createElement('textarea');
+            }).catch(function() {
+                var area = document.createElement('textarea');
                 area.value = text;
                 document.body.appendChild(area);
                 area.select();
@@ -726,20 +727,25 @@
                 showToast('📋 Copied! Opening WhatsApp...');
             });
 
-            setTimeout(() => {
+            setTimeout(function() {
                 window.open('https://wa.me/', '_blank');
             }, 500);
         }
 
         function showToast(msg) {
-            const t = document.getElementById('toast');
+            var t = document.getElementById('toast');
             t.textContent = msg;
             t.classList.add('show');
             clearTimeout(t._timer);
-            t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+            t._timer = setTimeout(function() {
+                t.classList.remove('show');
+            }, 2500);
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        // ============================================
+        // INIT
+        // ============================================
+        window.addEventListener('DOMContentLoaded', function() {
             document.getElementById('generated-box').classList.remove('visible');
             document.getElementById('message-output').textContent = '';
             document.getElementById('status-text').textContent = 'Fill the form and click GENERATE';
@@ -748,3 +754,4 @@
 
 </body>
 </html>
+J O Y ~ B O Y
