@@ -111,93 +111,7 @@
         .line-v:nth-child(14) { left: 75%; animation-duration: 2.6s; animation-delay: 0.2s; }
         .line-v:nth-child(15) { left: 90%; animation-duration: 3.6s; animation-delay: 0.7s; }
 
-        #access-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.94);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-        }
-        #access-overlay.hidden { display: none; }
-
-        #access-overlay .logo {
-            font-size: 48px;
-            font-weight: 900;
-            letter-spacing: 12px;
-            color: #fff;
-            text-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
-            font-family: 'Courier New', monospace;
-            text-align: center;
-        }
-        #access-overlay .logo span { color: #ff0000; }
-
-        #access-overlay .sub {
-            color: #ff2222;
-            font-size: 13px;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 30px rgba(255,0,0,0.3);
-        }
-
-        #access-overlay .lock-icon {
-            font-size: 40px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        #access-overlay input {
-            background: rgba(255, 255, 255, 0.04);
-            border: 2px solid rgba(255, 0, 0, 0.4);
-            border-radius: 10px;
-            padding: 12px 20px;
-            font-size: 20px;
-            color: #fff;
-            text-align: center;
-            width: 220px;
-            outline: none;
-            letter-spacing: 8px;
-            font-family: 'Courier New', monospace;
-        }
-        #access-overlay input:focus {
-            border-color: #ff0000;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.15);
-        }
-        #access-overlay .btn-access {
-            background: #ff0000;
-            color: #fff;
-            border: none;
-            padding: 12px 48px;
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 4px;
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.25);
-        }
-        #access-overlay .btn-access:hover {
-            transform: scale(1.04);
-            box-shadow: 0 0 60px rgba(255, 0, 0, 0.4);
-        }
-        #access-overlay .error-msg {
-            color: #ff4444;
-            font-size: 13px;
-            min-height: 20px;
-            font-family: 'Courier New', monospace;
-        }
-
         #main-content {
-            display: none;
             position: relative;
             z-index: 10;
             background: rgba(0, 0, 0, 0.55);
@@ -208,7 +122,6 @@
             width: 100%;
             margin: 20px auto;
         }
-        #main-content.visible { display: block; }
 
         .header-image {
             width: 100%;
@@ -444,8 +357,6 @@
         @media (max-width: 600px) {
             #main-content { padding: 24px 16px; margin: 10px; }
             .main-logo { font-size: 30px; letter-spacing: 8px; }
-            #access-overlay .logo { font-size: 32px; letter-spacing: 8px; }
-            #access-overlay input { width: 180px; font-size: 16px; }
             .header-image { max-height: 180px; }
         }
     </style>
@@ -470,17 +381,6 @@
     <div class="line-v"></div>
     <div class="line-v"></div>
     <div class="line-v"></div>
-
-    <div id="access-overlay">
-        <div class="lock-icon">⛔</div>
-        <div class="logo">INUZUKA</div>
-        <div class="sub">Access Restricted</div>
-        <input type="password" id="access-input" placeholder="••••" maxlength="4" autofocus>
-        <button class="btn-access" onclick="checkAccess()">ENTER</button>
-        <div class="error-msg" id="access-error"></div>
-    </div>
-
-    <div class="toast" id="toast"></div>
 
     <div id="main-content">
         <img class="header-image" id="header-image" src="53517900-6B79-4E2E-92C0-16CD724C4CAE.jpeg" alt="INUZUKA" onerror="this.style.display='none'">
@@ -541,46 +441,6 @@
 
     <script>
         // ============================================
-        // FONCTION SIMPLE POUR LE CODE
-        // ============================================
-        function checkAccess() {
-            var input = document.getElementById('access-input');
-            var error = document.getElementById('access-error');
-            var code = input.value;
-            
-            if (code === '1212' || code === '2112') {
-                // Cacher l'overlay
-                document.getElementById('access-overlay').style.display = 'none';
-                // Afficher le contenu
-                document.getElementById('main-content').style.display = 'block';
-                error.textContent = '';
-                
-                if (code === '2112') {
-                    window.isAdminMode = true;
-                    document.getElementById('status-text').textContent = '🔴 ADMIN MODE';
-                    document.getElementById('status-text').style.color = '#ff3333';
-                } else {
-                    window.isAdminMode = false;
-                    document.getElementById('status-text').textContent = 'Fill the form and click GENERATE';
-                    document.getElementById('status-text').style.color = '#777';
-                }
-            } else {
-                error.textContent = '❌ Incorrect code';
-                input.value = '';
-                input.focus();
-            }
-        }
-
-        // ============================================
-        // APPUI SUR ENTRÉE
-        // ============================================
-        document.getElementById('access-input').onkeydown = function(e) {
-            if (e.key === 'Enter') {
-                checkAccess();
-            }
-        };
-
-        // ============================================
         // MESSAGES
         // ============================================
         var messageIndex = 0;
@@ -603,17 +463,6 @@
             };
 
             var typeLabel = typeLabels[type] || "doing bad things";
-
-            if (window.isAdminMode) {
-                var adminMessages = [
-                    "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I feel unsafe and I need help.') + " Can you please look into this? I have proof if needed.",
-                    "I'm reaching out because " + (nom || 'a user') + (numero ? ' (' + numero + ') ' : '') + "has been " + typeLabel + ". " + (details || 'This has been going on for too long.') + " Please help me with this.",
-                    "Hello, I need assistance. " + (nom || 'Someone') + (numero ? ' from ' + numero + ' ' : '') + "is " + typeLabel + ". " + (details || 'I'm scared and I don't know what to do.') + " Can someone help me please?"
-                ];
-                var msg = adminMessages[messageIndex % adminMessages.length];
-                messageIndex++;
-                return msg;
-            }
 
             var messages = [
                 "Hi, I need to report " + (nom || 'someone') + (numero ? ' with this number ' + numero + ' ' : '') + "who keeps " + typeLabel + ". " + (details || 'I\'ve been dealing with this for a while and I\'m really stressed.') + " Can you please check this out? I can send proof if needed. Thank you.",
@@ -669,13 +518,8 @@
                     btnGen.disabled = false;
                     btnCopy.disabled = false;
                     btnWa.disabled = false;
-                    if (window.isAdminMode) {
-                        status.textContent = '✅ ADMIN — ULTRA CONVINCING';
-                        status.style.color = '#ff3333';
-                    } else {
-                        status.textContent = '✅ Message ready';
-                        status.style.color = '#777';
-                    }
+                    status.textContent = '✅ Message ready';
+                    status.style.color = '#777';
                     showToast('✅ Message generated');
                 }
             }
