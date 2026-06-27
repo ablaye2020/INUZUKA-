@@ -17,363 +17,127 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             position: relative;
-            overflow: hidden;
-            padding: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 40px 20px;
         }
 
-        /* ===== VIDÉO EN FOND ===== */
-        #bg-video {
+        .bg-image {
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             z-index: 0;
+            opacity: 0.40;
             pointer-events: none;
-            opacity: 0.35;
-            filter: brightness(0.5) saturate(1.1);
+            filter: brightness(0.6) saturate(1.2);
         }
 
-        /* ===== OVERLAY ===== */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
-            pointer-events: none;
-        }
-
-        /* ===== PARTICULES D'OR ===== */
-        .particle-container {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: radial-gradient(circle, #ffd700, #ff8c00);
-            border-radius: 50%;
-            animation: floatParticle 12s ease-in-out infinite;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-        }
-
-        @keyframes floatParticle {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
-            20% { opacity: 0.8; }
-            80% { opacity: 0.6; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
-        .particle:nth-child(1) { --tx: 300px; --ty: -200px; animation-delay: 0s; left: 10%; top: 20%; }
-        .particle:nth-child(2) { --tx: -250px; --ty: 300px; animation-delay: 1.5s; left: 30%; top: 50%; }
-        .particle:nth-child(3) { --tx: 350px; --ty: 200px; animation-delay: 3s; left: 60%; top: 30%; }
-        .particle:nth-child(4) { --tx: -300px; --ty: -250px; animation-delay: 4.5s; left: 80%; top: 70%; }
-        .particle:nth-child(5) { --tx: 200px; --ty: -350px; animation-delay: 6s; left: 20%; top: 80%; }
-        .particle:nth-child(6) { --tx: -200px; --ty: 400px; animation-delay: 7.5s; left: 50%; top: 10%; }
-        .particle:nth-child(7) { --tx: 400px; --ty: 150px; animation-delay: 9s; left: 70%; top: 60%; }
-        .particle:nth-child(8) { --tx: -350px; --ty: -300px; animation-delay: 10.5s; left: 40%; top: 90%; }
-
-        /* ===== ACCESS OVERLAY ===== */
-        #access-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-        }
-        #access-overlay.hidden { display: none; }
-
-        #access-overlay .logo {
-            font-size: 52px;
-            font-weight: 900;
-            letter-spacing: 14px;
-            color: #fff;
-            text-shadow: 0 0 60px rgba(255, 215, 0, 0.3), 0 0 120px rgba(255, 215, 0, 0.1);
-            font-family: 'Courier New', monospace;
-            text-align: center;
-        }
-        #access-overlay .logo span { color: #ffd700; }
-
-        #access-overlay .sub {
-            color: #ffd700;
-            font-size: 14px;
-            letter-spacing: 10px;
-            text-transform: uppercase;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-        }
-
-        #access-overlay .lock-icon {
-            font-size: 45px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
-        #access-overlay input {
-            background: rgba(255, 255, 255, 0.04);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 12px;
-            padding: 14px 24px;
-            font-size: 22px;
-            color: #fff;
-            text-align: center;
-            width: 240px;
-            outline: none;
-            letter-spacing: 8px;
-            font-family: 'Courier New', monospace;
-            transition: 0.3s;
-        }
-        #access-overlay input:focus {
-            border-color: #ffd700;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.1);
-        }
-        #access-overlay .btn-access {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #000;
-            border: none;
-            padding: 14px 56px;
-            border-radius: 40px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 4px;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
-            transition: 0.3s;
-        }
-        #access-overlay .btn-access:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.3);
-        }
-        #access-overlay .error-msg {
-            color: #ff4444;
-            font-size: 14px;
-            min-height: 20px;
-            font-family: 'Courier New', monospace;
-        }
-
-        /* ===== MAIN CONTENT ===== */
         #main-content {
-            display: none;
             position: relative;
             z-index: 10;
-            background: rgba(10, 10, 10, 0.55);
-            backdrop-filter: blur(16px);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(12px);
             border-radius: 32px;
             padding: 40px 38px;
             max-width: 720px;
             width: 100%;
             margin: 20px auto;
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.5);
         }
 
-        /* ===== LUFFY GEAR 5 EN HAUT ===== */
-        .luffy-container {
-            text-align: center;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .luffy-image {
-            width: 160px;
-            height: 160px;
-            object-fit: contain;
-            border-radius: 50%;
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.15), 0 0 120px rgba(255, 215, 0, 0.05);
-            animation: luffyFloat 4s ease-in-out infinite;
-            border: 2px solid rgba(255, 215, 0, 0.08);
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.05), transparent 70%);
-            padding: 8px;
-        }
-
-        @keyframes luffyFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-6px) scale(1.02); }
-        }
-
-        /* Anneaux autour de Luffy */
-        .luffy-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 215, 0, 0.08);
-            animation: ringExpand 4s ease-out infinite;
-            pointer-events: none;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .luffy-ring:nth-child(2) { width: 180px; height: 180px; animation-delay: 0s; }
-        .luffy-ring:nth-child(3) { width: 210px; height: 210px; animation-delay: 1.3s; border-color: rgba(255, 215, 0, 0.05); }
-        .luffy-ring:nth-child(4) { width: 240px; height: 240px; animation-delay: 2.6s; border-color: rgba(255, 215, 0, 0.03); }
-
-        @keyframes ringExpand {
-            0% { transform: translate(-50%, -50%) scale(0.9); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
-        }
-
-        /* ===== LOGO WHATSAPP ===== */
-        .whatsapp-header {
-            text-align: center;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .wa-logo-glow {
-            display: inline-block;
-            position: relative;
-            width: 44px;
-            height: 44px;
-            animation: logoFloat 3s ease-in-out infinite;
-        }
-
-        .wa-logo-glow svg {
+        .header-image {
             width: 100%;
-            height: 100%;
-            fill: #25D366;
-            filter: drop-shadow(0 0 20px rgba(37, 211, 102, 0.2));
-            position: relative;
-            z-index: 2;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 16px;
         }
 
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-        }
-
-        .wa-ring {
-            position: absolute;
-            inset: -6px;
-            border-radius: 50%;
-            border: 1px solid rgba(37, 211, 102, 0.15);
-            animation: waRingPulse 2.8s ease-out infinite;
-            z-index: 1;
-        }
-        .wa-ring:nth-child(1) { animation-delay: 0s; inset: -4px; }
-        .wa-ring:nth-child(2) { animation-delay: 0.9s; inset: -14px; border-color: rgba(37, 211, 102, 0.08); }
-
-        @keyframes waRingPulse {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(1.6); opacity: 0; }
-        }
-
-        .wa-logo-text {
-            display: block;
-            color: #25D366;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            margin-top: 2px;
-            font-family: 'Courier New', monospace;
-            opacity: 0.5;
-        }
-
-        /* ===== TEXTE PRINCIPAL ===== */
         .main-logo {
-            font-size: 38px;
+            font-size: 44px;
             font-weight: 900;
-            letter-spacing: 12px;
+            letter-spacing: 14px;
             color: #ffffff;
-            text-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+            text-shadow: 0 0 60px rgba(255, 0, 0, 0.2);
             text-align: center;
             font-family: 'Courier New', monospace;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
-        .main-logo span { color: #ffd700; }
+        .main-logo span { color: #ff1a1a; }
 
         .main-sub {
             text-align: center;
-            color: #ffd700;
-            font-size: 11px;
-            letter-spacing: 8px;
+            color: #ff3333;
+            font-size: 12px;
+            letter-spacing: 10px;
             text-transform: uppercase;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.06);
-            padding-bottom: 14px;
-            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.06);
+            padding-bottom: 16px;
+            margin-bottom: 22px;
             font-family: 'Courier New', monospace;
-            opacity: 0.6;
         }
 
-        /* ===== FORMULAIRE ===== */
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             text-align: left;
         }
         .form-group label {
-            color: #aaa;
-            font-size: 11px;
+            color: #ccc;
+            font-size: 13px;
             font-weight: 600;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             font-family: 'Courier New', monospace;
-            text-transform: uppercase;
         }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             border: none;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 10px 14px;
+            padding: 12px 16px;
             color: #eee;
-            font-size: 14px;
+            font-size: 15px;
             font-family: 'Segoe UI', sans-serif;
             outline: none;
             transition: 0.3s;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-bottom: 1px solid #ffd700;
-            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid #ff3333;
         }
         .form-group select option {
             background: #111;
             color: #eee;
         }
         .form-group textarea {
-            min-height: 56px;
+            min-height: 60px;
             resize: vertical;
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* ===== MESSAGE GÉNÉRÉ ===== */
         .generated-box {
-            background: rgba(255, 215, 0, 0.02);
+            background: rgba(255, 0, 0, 0.03);
             border-radius: 16px;
-            padding: 16px 18px;
-            margin: 16px 0 18px;
+            padding: 18px 20px;
+            margin: 18px 0 20px;
             text-align: left;
             display: none;
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
             min-height: 50px;
-            border-left: 2px solid rgba(255, 215, 0, 0.12);
+            border-left: 2px solid rgba(255, 0, 0, 0.12);
         }
         .generated-box.visible { display: block; }
         .generated-box .msg-title {
-            color: #ffd700;
-            font-size: 10px;
+            color: #ff4444;
+            font-size: 11px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-family: 'Courier New', monospace;
-            opacity: 0.6;
         }
         .generated-box .msg-content {
             color: #eee;
@@ -387,7 +151,7 @@
             display: inline-block;
             width: 2px;
             height: 17px;
-            background: #ffd700;
+            background: #ff3333;
             animation: blink 0.7s step-end infinite;
             vertical-align: text-bottom;
             margin-left: 2px;
@@ -397,34 +161,34 @@
             50% { opacity: 0; }
         }
 
-        /* ===== BOUTONS ===== */
         .btn-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             justify-content: center;
         }
         .btn {
-            padding: 12px 28px;
+            padding: 14px 34px;
             border: none;
             border-radius: 50px;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             transition: 0.3s ease;
             letter-spacing: 1px;
             flex: 1 1 auto;
-            min-width: 120px;
+            min-width: 130px;
             font-family: 'Courier New', monospace;
         }
         .btn-generate {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #000;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+            background: #ff1a1a;
+            color: #fff;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2);
         }
         .btn-generate:hover {
-            transform: scale(1.04);
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.25);
+            background: #cc0000;
+            transform: scale(1.03);
+            box-shadow: 0 0 60px rgba(255, 0, 0, 0.35);
         }
         .btn-generate:disabled {
             opacity: 0.4;
@@ -438,21 +202,18 @@
         }
         .btn-copy:hover {
             background: rgba(255, 255, 255, 0.12);
-            transform: scale(1.03);
         }
         .btn-copy:disabled {
             opacity: 0.3;
             cursor: not-allowed;
-            transform: none;
         }
         .btn-whatsapp {
-            background: linear-gradient(135deg, #25D366, #1da851);
+            background: #25D366;
             color: #fff;
-            box-shadow: 0 0 30px rgba(37, 211, 102, 0.15);
         }
         .btn-whatsapp:hover {
-            transform: scale(1.04);
-            box-shadow: 0 0 50px rgba(37, 211, 102, 0.25);
+            background: #1da851;
+            transform: scale(1.03);
         }
         .btn-whatsapp:disabled {
             opacity: 0.3;
@@ -460,16 +221,15 @@
             transform: none;
         }
 
-        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(17, 17, 17, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            padding: 10px 24px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            padding: 12px 28px;
             border-radius: 40px;
             color: #ccc;
             font-size: 13px;
@@ -482,8 +242,8 @@
         .toast.show { opacity: 1; }
 
         .status-text {
-            color: #888;
-            font-size: 11px;
+            color: #777;
+            font-size: 12px;
             text-align: center;
             margin-top: 8px;
             font-family: 'Courier New', monospace;
@@ -492,134 +252,50 @@
 
         .footer-link {
             text-align: center;
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 0, 0, 0.05);
             font-family: 'Courier New', monospace;
         }
         .footer-link a {
-            color: #ffd700;
+            color: #ff5555;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 13px;
             letter-spacing: 3px;
             transition: 0.3s;
-            opacity: 0.4;
+            opacity: 0.6;
         }
         .footer-link a:hover {
-            opacity: 0.8;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+            opacity: 1;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
         }
 
         .whatsapp-note {
             text-align: center;
-            color: #555;
+            color: #444;
             font-size: 10px;
-            margin-top: 6px;
+            margin-top: 8px;
             font-family: 'Courier New', monospace;
             letter-spacing: 1px;
         }
 
-        /* ===== BOUTON SON ===== */
-        .sound-btn {
-            position: fixed;
-            bottom: 90px;
-            right: 30px;
-            z-index: 100;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            color: #ffd700;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(8px);
-        }
-        .sound-btn:hover {
-            background: rgba(255, 215, 0, 0.2);
-            transform: scale(1.05);
-        }
-
         @media (max-width: 600px) {
             #main-content { padding: 24px 16px; margin: 10px; }
-            .main-logo { font-size: 28px; letter-spacing: 8px; }
-            .luffy-image { width: 120px; height: 120px; }
-            .luffy-ring:nth-child(2) { width: 140px; height: 140px; }
-            .luffy-ring:nth-child(3) { width: 170px; height: 170px; }
-            .luffy-ring:nth-child(4) { width: 200px; height: 200px; }
-            .wa-logo-glow { width: 36px; height: 36px; }
-            .sound-btn { bottom: 80px; right: 16px; width: 38px; height: 38px; font-size: 16px; }
+            .main-logo { font-size: 30px; letter-spacing: 8px; }
+            .header-image { max-height: 180px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== VIDÉO EN FOND ===== -->
-    <video autoplay loop playsinline id="bg-video">
-        <source src="IMG_6901.MOV" type="video/mp4">
-        Votre navigateur ne supporte pas la vidéo.
-    </video>
+    <img class="bg-image" src="53517900-6B79-4E2E-92C0-16CD724C4CAE.jpeg" alt="background" onerror="this.style.display='none'">
 
-    <!-- ===== OVERLAY ===== -->
-    <div class="overlay"></div>
-
-    <!-- ===== PARTICULES ===== -->
-    <div class="particle-container">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-
-    <!-- ===== BOUTON SON ===== -->
-    <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔇</button>
-
-    <!-- ===== ACCESS OVERLAY ===== -->
-    <div id="access-overlay">
-        <div class="lock-icon">⛔</div>
-        <div class="logo">INUZUKA</div>
-        <div class="sub">Access Restricted</div>
-        <input type="password" id="access-input" placeholder="••••" maxlength="4" autofocus>
-        <button class="btn-access" onclick="checkAccess()">ENTER</button>
-        <div class="error-msg" id="access-error"></div>
-    </div>
-
-    <!-- ===== MAIN CONTENT ===== -->
     <div id="main-content">
-        <!-- ===== LUFFY GEAR 5 ===== -->
-        <div class="luffy-container">
-            <!-- Image Luffy Gear 5 -->
-            <img class="luffy-image" id="luffyImage" src="https://i.ibb.co/MNtGp6L/luffy-gear5.png" alt="Luffy Gear 5" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Ccircle cx=%22100%22 cy=%22100%22 r=%2290%22 fill=%22%231a1a1a%22 stroke=%22%23ffd700%22 stroke-width=%222%22/%3E%3Ctext x=%2250%22 y=%22110%22 font-size=%2240%22 fill=%22%23ffd700%22 font-family=%22Arial%22%3E⚔%3C/text%3E%3C/svg%3E'">
-            <div class="luffy-ring"></div>
-            <div class="luffy-ring"></div>
-            <div class="luffy-ring"></div>
-        </div>
+        <img class="header-image" id="header-image" src="53517900-6B79-4E2E-92C0-16CD724C4CAE.jpeg" alt="INUZUKA" onerror="this.style.display='none'">
 
-        <!-- ===== LOGO WHATSAPP ===== -->
-        <div class="whatsapp-header">
-            <div class="wa-logo-glow">
-                <div class="wa-ring"></div>
-                <div class="wa-ring"></div>
-                <svg viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                <span class="wa-logo-text">⚡ JOIN US ⚡</span>
-            </div>
-        </div>
-
-        <!-- ===== INUZUKA ===== -->
         <div class="main-logo">I<span>N</span>UZUKA</div>
         <div class="main-sub">⚡ Signal Generator ⚡</div>
 
-        <!-- ===== FORMULAIRE ===== -->
         <div class="form-group">
             <label>👤 Name / Username of the abuser</label>
             <input type="text" id="nom" placeholder="Ex: John DOE or @username">
@@ -649,7 +325,6 @@
             <textarea id="details" placeholder="Describe exactly what this person did to you..."></textarea>
         </div>
 
-        <!-- ===== MESSAGE GÉNÉRÉ ===== -->
         <div class="generated-box" id="generated-box">
             <div class="msg-title">📨 GENERATING MESSAGE...</div>
             <div class="msg-content" id="message-output">
@@ -659,7 +334,6 @@
 
         <div class="status-text" id="status-text">Fill the form and click GENERATE</div>
 
-        <!-- ===== BOUTONS ===== -->
         <div class="btn-group">
             <button class="btn btn-generate" id="btn-generate" onclick="startGeneration()">⚡ GENERATE</button>
             <button class="btn btn-copy" id="btn-copy" disabled onclick="copyMessage()">📋 COPY</button>
@@ -673,58 +347,7 @@
         </div>
     </div>
 
-    <!-- ===== TOAST ===== -->
-    <div class="toast" id="toast"></div>
-
     <script>
-        // ============================================
-        // GESTION DU SON
-        // ============================================
-        var video = document.getElementById('bg-video');
-        var soundBtn = document.getElementById('soundBtn');
-        var isSoundOn = false;
-
-        function toggleSound() {
-            if (isSoundOn) {
-                video.muted = true;
-                soundBtn.textContent = '🔇';
-                isSoundOn = false;
-            } else {
-                video.muted = false;
-                video.volume = 0.3;
-                soundBtn.textContent = '🔊';
-                isSoundOn = true;
-            }
-        }
-
-        // ============================================
-        // CODE D'ACCÈS : 2006
-        // ============================================
-        function checkAccess() {
-            var input = document.getElementById('access-input');
-            var error = document.getElementById('access-error');
-            var code = input.value;
-            
-            if (code === '2006') {
-                document.getElementById('access-overlay').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                error.textContent = '';
-            } else {
-                error.textContent = '❌ Incorrect code';
-                input.value = '';
-                input.focus();
-            }
-        }
-
-        document.getElementById('access-input').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                checkAccess();
-            }
-        });
-
-        // ============================================
-        // MESSAGES
-        // ============================================
         var messageIndex = 0;
 
         function generateFullMessage() {
@@ -838,9 +461,6 @@
             return msg;
         }
 
-        // ============================================
-        // GÉNÉRATION
-        // ============================================
         var isGenerating = false;
         var displayText = '';
 
@@ -880,7 +500,7 @@
                     btnCopy.disabled = false;
                     btnWa.disabled = false;
                     status.textContent = '✅ Message ready';
-                    status.style.color = '#888';
+                    status.style.color = '#777';
                     showToast('✅ Message generated');
                 }
             }
