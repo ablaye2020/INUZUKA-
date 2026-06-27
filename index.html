@@ -211,10 +211,10 @@
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             color: #aaa;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
             transition: 0.3s;
             display: flex;
@@ -226,6 +226,11 @@
         .sound-btn:hover {
             background: rgba(255, 255, 255, 0.12);
             transform: scale(1.05);
+        }
+        .sound-btn.active {
+            color: #25D366;
+            border-color: rgba(37, 211, 102, 0.3);
+            box-shadow: 0 0 30px rgba(37, 211, 102, 0.1);
         }
 
         .form-group {
@@ -433,18 +438,25 @@
             .logo-wa-container { gap: 10px; }
             .wa-icon { width: 32px; height: 32px; }
             .header-image { max-height: 180px; }
-            .sound-btn { bottom: 80px; right: 16px; width: 38px; height: 38px; font-size: 16px; }
+            .sound-btn { bottom: 80px; right: 16px; width: 42px; height: 42px; font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- === VIDÉO EN FOND (VIDÉO DE DÉMONSTRATION) === -->
+    <!-- === VIDÉO EN FOND === -->
     <video autoplay loop playsinline id="bg-video">
+        <source src="IMG_6901.MOV" type="video/mp4">
         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         Votre navigateur ne supporte pas la vidéo.
     </video>
     <div class="bg-overlay"></div>
+
+    <!-- === MUSIQUE (audio) === -->
+    <audio id="bg-audio" loop>
+        <source src="song.mp3.m4a" type="audio/mp4">
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- === BOUTON SON === -->
     <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔇</button>
@@ -525,21 +537,29 @@
 
     <script>
         // ============================================
-        // GESTION DU SON
+        // GESTION DU SON (VIDÉO + MUSIQUE)
         // ============================================
         var video = document.getElementById('bg-video');
+        var audio = document.getElementById('bg-audio');
         var soundBtn = document.getElementById('soundBtn');
         var isSoundOn = false;
 
         function toggleSound() {
             if (isSoundOn) {
                 video.muted = true;
+                audio.pause();
                 soundBtn.textContent = '🔇';
+                soundBtn.classList.remove('active');
                 isSoundOn = false;
             } else {
                 video.muted = false;
                 video.volume = 0.3;
+                audio.volume = 0.4;
+                audio.play().catch(function(e) {
+                    console.log('Audio play failed:', e);
+                });
                 soundBtn.textContent = '🔊';
+                soundBtn.classList.add('active');
                 isSoundOn = true;
             }
         }
